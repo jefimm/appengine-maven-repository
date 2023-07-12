@@ -38,13 +38,21 @@ public class BasicSecurityContextRequestFilter implements ContainerRequestFilter
     @Override
     public void filter(ContainerRequestContext containerRequest) throws WebApplicationException {
 
-        final String authorization = containerRequest.getHeaderString(HttpHeaders.AUTHORIZATION);
+        String authorization = containerRequest.getHeaderString(HttpHeaders.AUTHORIZATION);
         User user = null;
 
         if(authorization == null) {
             user = userMap.get(ANONYMOUS_TOKEN);
-        }else if(authorization.startsWith(BASIC)) {
-            user = userMap.get(authorization.substring(BASIC.length() + 1));
+        } else if(authorization.startsWith(BASIC)) {
+            authorization = authorization.substring(BASIC.length() + 1);
+            user = userMap.get(authorization);
+            if (user == null && authorization.length() > 1) {
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
 
         if(user != null) {
