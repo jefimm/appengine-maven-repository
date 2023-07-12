@@ -11,10 +11,7 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.ext.Provider;
 import java.nio.charset.Charset;
 import java.security.Principal;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -48,7 +45,8 @@ public class BasicSecurityContextRequestFilter implements ContainerRequestFilter
             user = userMap.get(authorization);
             if (user == null && authorization.length() > 1) {
                 try {
-                    Thread.sleep(2000);
+                    Random rand = new Random();
+                    Thread.sleep(rand.nextInt(2000));
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
