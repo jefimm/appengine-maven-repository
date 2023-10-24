@@ -52,5 +52,9 @@ final public class Directory {
         public Directory build() {
             return new Directory(this);
         }
+
+        public boolean isEmpty() {
+            return files.isEmpty();
+        }
     }
 }
